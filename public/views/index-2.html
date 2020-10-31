@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #open-popup{
+            color: white;
+            background-color: tomato;
+            width: fit-content;
+            padding: 0px 10px 0px 10px;
+            border-radius: 8%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Index file loaded.</h1>
+    <div id="open-popup">
+        <h3>Call API</h3>
+    </div>
+    
+</body>
+<script>
+    /**
+     * this is a IIFE for initializing the twitter API
+     */
+     Twitter = (function(){
+        return {
+            call: function(data, cb){
+                var xhttp = new XMLHttpRequest();
+                // return new Promise(function(resolve, reject){
+                    var queryString = '';
+                    var i = 0;
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            var val = data[key];
+                            if( i === 0){
+                                queryString += key+'='+val;
+                                i++;
+                            }else{
+                                queryString += '&'+key+'='+val;
+                            }
+                        }
+                    }
+
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            // resolve(JSON.parse(this.response))
+                            cb(JSON.parse(this.response))
+                        }
+                    };
+                    
+                    xhttp.open("POST", "http://localhost:5021/api/feedbacks/twitter_requests", true);
+
+                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+                    xhttp.send(queryString);
+                // })
+            }
+        }
+    })();
+
+    // get url params from the url
+    function getParameterByName(name) {
+        var url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return '';
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    /**
+     *  initialize the twitter component
+     */
+    function initialCall(){
+        var oauth_token = getParameterByName('oauth_token');
+        var oauth_verifier = getParameterByName('oauth_verifier');
+        if(oauth_token && oauth_verifier){
+                Twitter.call({
+                    oauth_token:oauth_token,
+                    oauth_verifier:oauth_verifier,
+                    type:'access_token'
+                },function(response){
+                    console.log(response)
+                });
+            }
+    }
+
+
+    var PopupModel = (function(){
+        var __CHILD_WINDOW_HANDLE = null;
+        return {
+            open:function(){
+                // "http://localhost:5021/api/feedbacks/twitter_requests"
+                __CHILD_WINDOW_HANDLE = window.open('http://localhost:3000/callback', '_blank', 'width=700,height=500,left=200,top=100');
+                __CHILD_WINDOW_HANDLE['twitter'] = Twitter;
+                // __CHILD_WINDOW_HANDLE.addEventListener('beforeunload', function(){
+                //     console.log('The modal is closed');
+                    // __CHILD_WINDOW_HANDLE.opener.ProcessChildMessage('Message to the parent');
+                    // __CHILD_WINDOW_HANDLE.opener.postMessage('message from child')
+                // })
+                
+                
+            },
+            close: function(){
+                
+            }
+        }
+        
+    })()
+    var btn = document.getElementById('open-popup');
+    btn.addEventListener('click', function(){
+        PopupModel.open()
+    });
+
+
+    function receiveMessage(event){
+        console.log(event.data)
+    }
+    window.addEventListener("message", receiveMessage, false);
+</script>
+</html>

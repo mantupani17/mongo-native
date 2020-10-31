@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC “-//W3C//DTD HTML 4.0 Transitional//EN”>
+
+<html>
+<head>
+<title>Untitled</title>
+
+<script>
+
+
+//the new window object handle
+
+var newWindowsArray = new Array();
+
+function openWindow(winURL, winName, winFeatures)
+{
+newWindow = window.open(winURL, winName, winFeatures);
+newWindowsArray[newWindowsArray.length] = newWindow;
+}
+
+function closeWindowByName(winName)
+{
+for(i=0; i<newWindowsArray.length; i++)
+{
+if(newWindowsArray[i].name==winName)
+{
+alert();
+newWindowsArray[i].close();
+break;
+}
+}
+}
+
+//–>
+</script>
+</head>
+
+<body>
+
+<a href=“javascript:openWindow(‘http://www.sap.com’, ‘window1’, ‘height=300,width=300’)”>open window1</a>
+<a href=“javascript:openWindow(‘http://www.sap.com’, ‘window2’, ‘height=300,width=300’)”>open window2</a>
+<br><br>
+<a href=“javascript:closeWindowByName(‘window1’)”>close window1</a>
+<a href=“javascript:closeWindowByName(‘window2’)”>close window2</a>
+
+</body>
+</html>

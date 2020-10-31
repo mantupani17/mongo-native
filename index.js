@@ -4,6 +4,8 @@ var bodyparser = require('body-parser');
 var path = require('path');
 // custom router mounting
 const apis = require('./routes/api');
+const FrontEnd = require('./routes/frontend');
+
 
 // body-parser middleware
 app.use(bodyparser.json());
@@ -16,6 +18,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // mounting router
 app.use('/api', apis);
+
+app.use('/', FrontEnd)
 
 
 

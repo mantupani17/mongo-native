@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #open-popup{
+            color: white;
+            background-color: tomato;
+            width: fit-content;
+            padding: 0px 10px 0px 10px;
+            border-radius: 8%;
+            cursor: pointer;
+        }
+    </style>
+    <script src="../assets/js/jquery-min.js"></script>
+</head>
+<body>
+    <h1>Index file loaded.</h1>
+    <div id="open-popup">
+        <h3>Call API</h3>
+    </div>
+</body>
+<script src="../assets/js/oauth.js"></script>
+<script>
+    
+    $('#open-popup').on('click', function(){
+        var new_window = Oauth.popup('http://localhost:3000/callback', function(err, newWindow){
+            return newWindow;
+        });
+
+        if (new_window) {
+            new_window.focus();
+                interval = window.setInterval(function () {
+                    if (new_window === null || new_window.closed) {
+                        window.clearInterval(interval);
+                        var loc = localStorage.getItem('oauth_det');
+                        if(loc){
+                            localStorage.removeItem('oauth_det');
+                            loc = JSON.parse(loc);
+                            var q = {data:loc};
+                            receiveMessage(q);
+                        }
+                        console.log("Closed");
+                    }else {
+                        console.log("Opened");
+                    }
+                }, 500);
+        } else {
+                                    
+        }
+    });
+
+    function receiveMessage(event) {
+        Oauth.getAccToken(event.data, function(err, res){
+            if(res){
+                console.log(res)
+            }
+            
+        })
+    }
+    window.addEventListener("message", receiveMessage, false);
+    
+</script>
+</html>

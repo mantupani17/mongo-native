@@ -1,0 +1,103 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter callback</title>
+    <style>
+        #error-msg{
+            color: red;
+            display: none;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="error-msg"><h2>We are sorry to inform you that, This browser is not supporting, please open this in chrome.</h2></div>
+</body>
+<script>
+    function init(){
+        var oauth_token = getParameterByName('oauth_token');
+        var oauth_verifier = getParameterByName('oauth_verifier');
+        if(oauth_token && oauth_verifier){
+            if ((this.opener === null) || (this.opener === undefined)){
+                console.log('Window.opener is not supporting')
+                window.twitterData = {oauth_token: oauth_token, oauth_verifier:oauth_verifier, oauth_type:'Twitter'};
+                // var openerWindow = window.dialogArguments;
+                // console.log(openerWindow)
+                // document.getElementById('error-msg').style.display = 'block';
+                // alert(JSON.stringify({oauth_token: oauth_token, oauth_verifier:oauth_verifier, oauth_type:'Twitter'}))
+                // window.postMessage({oauth_token: oauth_token, oauth_verifier:oauth_verifier, oauth_type:'Twitter'})
+                this.close();
+                return false
+            }
+            this.opener.postMessage({oauth_token: oauth_token, oauth_verifier:oauth_verifier, oauth_type:'Twitter'});
+            this.close();
+        }
+    }
+    // initializing the twitter callback
+    init();
+    // get url params from the url
+    function getParameterByName(name) {
+        var url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return '';
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    
+</script>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Callback</title>
+    
+</head>
+<body>
+    <h1>Loading</h1>
+</body>
+<script src="../assets/js/oauth.js"></script>
+<script>
+    console.log(Oauth)
+// (function(window){
+//     function init(){
+//         console.log(this)
+//         var oauth_token = getParameterByName('oauth_token');
+//         var oauth_verifier = getParameterByName('oauth_verifier');
+//         if(oauth_token && oauth_verifier){
+//             console.log({oauth_token: oauth_token, oauth_verifier: oauth_verifier})
+//             this.opener.postMessage({oauth_token: oauth_token, oauth_verifier: oauth_verifier});
+//             this.close();
+//         }else{
+//             this.twitter.call({ type:'request_token',callbackUrl: location.href },function(response){
+//                     console.log(response)
+//                     if(response && response.data && response.data.authtenticate_url){
+//                         location.href = response.data.authtenticate_url;
+//                     }
+//             }.bind(this));
+//         }
+//     }
+//     init();
+//     // get url params from the url
+//     function getParameterByName(name) {
+//         var url = window.location.href;
+//         name = name.replace(/[\[\]]/g, '\\$&');
+//         var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+//             results = regex.exec(url);
+//         if (!results) return '';
+//         if (!results[2]) return '';
+//         return decodeURIComponent(results[2].replace(/\+/g, ' '));
+//     }
+// })(window)
+    
+    
+</script>
+</html>

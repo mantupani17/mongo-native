@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Callback</title>
+    
+</head>
+<body>
+    <h1>Loading</h1>
+</body>
+<script src="../assets/js/oauth.js"></script>
+<script>
+    var oauth_token = Oauth.getParameterByName('oauth_token') || '';
+    var oauth_verifier = Oauth.getParameterByName('oauth_verifier') || '';
+    if(oauth_token && oauth_verifier){
+        var query = {
+            oauth_token:oauth_token,
+            oauth_verifier:oauth_verifier,
+            type:'access_token'
+        } 
+        try {
+            this.opener.postMessage(query);
+            this.close()
+        } catch (error) {
+            localStorage.setItem('oauth_det', JSON.stringify(query))
+            this.close()
+        }
+        // 
+    }else{
+        Oauth.getReqToken(function(err, res){
+            if(res){
+                // this.open(res, "_self");
+                // console.log(this)
+                // return false;
+                location.href = res;
+            }
+        })
+    }
+    
+</script>
+</html>
